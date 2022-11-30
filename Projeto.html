@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Cadastrado de Estabelecimentos</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
+    </head>
+    <body class="bg-dark">
+        <div class="container py-4">
+            <header>
+                <nav class="bg-danger">
+                    <div class="container-fluid">
+                        <h1 class="navbar-text text-white my-0 fw-normal">Cadastro de Estabelecimentos</h1>
+                    </div>
+                </nav>
+            </header>
+            <main>
+                <div class="row mt-3">
+                    <div class="col-md-5">
+                        <div class="card mb-6 rounded-3 shadow-sm border-danger">
+                            <div class="card-header py-4 shadow-sm border-danger text-white bg-danger">
+                                <h4 class="my-0 fw-normal">Informações do Estabelecimento</h4>
+                            </div>
+                            <div class="card-body form-group">
+                                <div class="mb-2">
+                                    <label for="estabelecimento">Nome do Estabelecimento:</label>
+                                    <input type="text" name="estabelecimento" id="estabelecimento" class="form-control" />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="cep">CEP:</label>
+                                    <input type="text" name="cep" id="cep" class="form-control" />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="uf">UF:</label>
+                                    <input type="text" name="uf" id="uf" class="form-control" />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="cidade">Cidade:</label>
+                                    <input type="text" name="cidade" id="cidade" class="form-control" />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="numero">N°:</label>
+                                    <input type="num" name="numero" id="numero" class="form-control" />
+                                </div>                                                               
+                                <div class="mb-2">
+                                    <label for="bairro">Bairro:</label>
+                                    <input type="text" name="bairro" id="bairro" class="form-control" />
+                                </div>
+                                <div class="form-group offset-md-4 col-md-4">
+                                    <button type="button" class="mt-2 w-100 btn btn-danger btn-lg" id="btnSalvar">Salvar</button>
+                                </div>                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card mb-6 rounded-3 shadow-sm border-danger">
+                            <div class="card-header py-4 shadow-sm bg-danger border-danger text-white">
+                                <h4 class="my-0 fw-normal">Listagem de Estabelecimentos Cadastrados</h4>
+                            </div>
+                            <div class="card-body form-group">
+                                <table id="tabela" class="table table-striped table-danger">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Estabelecimento</th>
+                                            <th scope="col">CEP</th>
+                                            <th scope="col">UF</th>
+                                            <th scope="col">Cidade</th>
+                                            <th scope="col">N°</th>
+                                            <th scope="col">Bairro</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="corpoTabela">
+
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-danger" onclick="remover();">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="jquery-3.6.1.min.js"></script>
+        <script type="text/javascript">
+            class Estabelecimento{
+                constructor(estabelecimento, cep, uf, cidade, numero, bairro){
+                    this.estabelecimento = estabelecimento;
+                    this.cep = cep;
+                    this.uf = uf;
+                    this.cidade = cidade;
+                    this.numero = numero;
+                    this.bairro = bairro;
+                }
+            }
+            
+            let listaEstabs = [];
+            
+            function listar(lista){
+                let auxHtml = '';
+                for(let i = 0; i < lista.length; i++){
+                    auxHtml += '<tr>'+
+                        '<td>' + lista[i].estabelecimento + '</td>' +
+                        '<td>' + lista[i].cep + '</td>' +
+                        '<td>' + lista[i].uf + '</td>' +
+                        '<td>' + lista[i].cidade + '</td>' +
+                        '<td>' + lista[i].numero + '</td>' +
+                        '<td>' + lista[i].bairro + '</td>' +
+                        '</tr>'
+                    }
+                return auxHtml;                       
+            }
+                    
+                    
+            $(document).ready(() => {
+                $('#btnSalvar').click(() => {
+                    let estabelecimento = $('#estabelecimento').val()
+                    let cep = $('#cep').val()
+                    let uf = $('#uf').val()
+                    let cidade = $('#cidade').val()
+                    let numero = $('#numero').val()
+                    let bairro = $('#bairro').val()
+                        
+                    if(estabelecimento != '' && cep != '' && uf != '' && cidade != '' && numero != '' && bairro != ''){
+                        let estab = new Estabelecimento(estabelecimento, cep, uf, cidade, numero, bairro);
+                        listaEstabs.push(estab);
+                        $('#corpoTabela').html(listar(listaEstabs));
+                        $('input').val('');
+                    }else{
+                        alert("Informe todos os campos!");
+                    }
+                });
+            });
+            
+            function remover(){
+                $('tr:last-child').remove();
+            }
+        </script>
+    </body>
+</html>
